@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<World>
+  <Actors>
+    <Actor name="human1" type="BasicTransformComponent" resource="data\actors\BasicTransformComponent.xml">
+      <TransformComponent>
+        <Position x="0.000000" y="0.000000" z="0.000000" />
+        <YawPitchRoll x="0.000000" y="0.000000" z="0.000000" />
+        <Scale x="1.000000" y="1.000000" z="1.000000" />
+      </TransformComponent>
+      <MeshRenderLightComponent>
+        <Color r="0.500000" g="0.500000" b="0.500000" a="1.000000" />
+        <PixelShader>pixel_shader_basic_light_alpha.cso</PixelShader>
+        <VertexShader>vertex_shader_light.cso</VertexShader>
+        <Radius>auto</Radius>
+      </MeshRenderLightComponent>
+      <MeshComponent>
+        <Obj>data\objects\plane.obj</Obj>
+      </MeshComponent>
+
+      <TextureAnimStateComponent>
+        <AtlasWidth>5</AtlasWidth>
+        <AtlasHeight>13</AtlasHeight>
+        <Frame Type="WalkLeft"          VerticalImageFlip="false" HorizontalImageFlip="true"  Data="7,12,17,22"   FrameTime="0.05" />
+        <Frame Type="WalkRight"         VerticalImageFlip="false" HorizontalImageFlip="false" Data="7,12,17,22"   FrameTime="0.05" />
+        <Frame Type="WalkToward"        VerticalImageFlip="false" HorizontalImageFlip="false" Data="9,14,19,24"   FrameTime="0.05" />
+        <Frame Type="WalkOutward"       VerticalImageFlip="false" HorizontalImageFlip="false" Data="5,10,15,20"   FrameTime="0.05" />
+        <Frame Type="WalkLeftToward"    VerticalImageFlip="false" HorizontalImageFlip="true"  Data="8,13,18,23"   FrameTime="0.05" />
+        <Frame Type="WalkRightToward"   VerticalImageFlip="false" HorizontalImageFlip="false" Data="8,13,18,23"   FrameTime="0.05" />
+        <Frame Type="WalkLeftOutward"   VerticalImageFlip="false" HorizontalImageFlip="true"  Data="6,11,16,21"   FrameTime="0.05" />
+        <Frame Type="WalkRightOutward"  VerticalImageFlip="false" HorizontalImageFlip="false" Data="6,11,16,21"   FrameTime="0.05" />
+        
+        <Frame Type="JumpLeft"          VerticalImageFlip="false" HorizontalImageFlip="true"  Data="7,12,17,22"   FrameTime="0.05" />
+        <Frame Type="JumpRight"         VerticalImageFlip="false" HorizontalImageFlip="false" Data="7,12,17,22"   FrameTime="0.05" />
+        <Frame Type="JumpToward"        VerticalImageFlip="false" HorizontalImageFlip="false" Data="9,14,19,24"   FrameTime="0.05" />
+        <Frame Type="JumpOutward"       VerticalImageFlip="false" HorizontalImageFlip="false" Data="5,10,15,20"   FrameTime="0.05" />
+        <Frame Type="JumpLeftToward"    VerticalImageFlip="false" HorizontalImageFlip="true"  Data="8,13,18,23"   FrameTime="0.05" />
+        <Frame Type="JumpRightToward"   VerticalImageFlip="false" HorizontalImageFlip="false" Data="8,13,18,23"   FrameTime="0.05" />
+        <Frame Type="JumpLeftOutward"   VerticalImageFlip="false" HorizontalImageFlip="true"  Data="6,11,16,21"   FrameTime="0.05" />
+        <Frame Type="JumpRightOutward"  VerticalImageFlip="false" HorizontalImageFlip="false" Data="6,11,16,21"   FrameTime="0.05" />
+        
+        <Frame Type="IdleLeft"          VerticalImageFlip="false" HorizontalImageFlip="true"  Data="2"            FrameTime="0.05" />
+        <Frame Type="IdleRight"         VerticalImageFlip="false" HorizontalImageFlip="false" Data="2"            FrameTime="0.05" />
+        <Frame Type="IdleToward"        VerticalImageFlip="false" HorizontalImageFlip="false" Data="4"            FrameTime="0.05" />
+        <Frame Type="IdleOutward"       VerticalImageFlip="false" HorizontalImageFlip="false" Data="0"            FrameTime="0.05" />
+        <Frame Type="IdleLeftToward"    VerticalImageFlip="false" HorizontalImageFlip="true"  Data="3"            FrameTime="0.05" />
+        <Frame Type="IdleRightToward"   VerticalImageFlip="false" HorizontalImageFlip="false" Data="3"            FrameTime="0.05" />
+        <Frame Type="IdleLeftOutward"   VerticalImageFlip="false" HorizontalImageFlip="true"  Data="1"            FrameTime="0.05" />
+        <Frame Type="IdleRightOutward"  VerticalImageFlip="false" HorizontalImageFlip="false" Data="1"            FrameTime="0.05" />
+        
+        <Frame Type="FireLeft"          VerticalImageFlip="false" HorizontalImageFlip="true"  Data="27,32,37,42"  FrameTime="0.05" />
+        <Frame Type="FireRight"         VerticalImageFlip="false" HorizontalImageFlip="false" Data="27,32,37,42"  FrameTime="0.05" />
+        <Frame Type="FireToward"        VerticalImageFlip="false" HorizontalImageFlip="false" Data="29,34,39,44"  FrameTime="0.05" />
+        <Frame Type="FireOutward"       VerticalImageFlip="false" HorizontalImageFlip="false" Data="25,30,35,40"  FrameTime="0.05" />
+        <Frame Type="FireLeftToward"    VerticalImageFlip="false" HorizontalImageFlip="true"  Data="28,33,38,43"  FrameTime="0.05" />
+        <Frame Type="FireRightToward"   VerticalImageFlip="false" HorizontalImageFlip="false" Data="28,33,38,43"  FrameTime="0.05" />
+        <Frame Type="FireLeftOutward"   VerticalImageFlip="false" HorizontalImageFlip="true"  Data="26,31,36,41"  FrameTime="0.05" />
+        <Frame Type="FireRightOutward"  VerticalImageFlip="false" HorizontalImageFlip="false" Data="26,31,36,41"  FrameTime="0.05" />
+        
+        <Frame Type="DieLeft"           VerticalImageFlip="false" HorizontalImageFlip="true"  Data="47,52,57,62"  FrameTime="0.05" />
+        <Frame Type="DieRight"          VerticalImageFlip="false" HorizontalImageFlip="false" Data="47,52,57,62"  FrameTime="0.05" />
+        <Frame Type="DieToward"         VerticalImageFlip="false" HorizontalImageFlip="false" Data="49,54,59,64"  FrameTime="0.05" />
+        <Frame Type="DieOutward"        VerticalImageFlip="false" HorizontalImageFlip="false" Data="45,50,55,60"  FrameTime="0.05" />
+        <Frame Type="DieLeftToward"     VerticalImageFlip="false" HorizontalImageFlip="true"  Data="48,53,58,63"  FrameTime="0.05" />
+        <Frame Type="DieRightToward"    VerticalImageFlip="false" HorizontalImageFlip="false" Data="48,53,58,63"  FrameTime="0.05" />
+        <Frame Type="DieLeftOutward"    VerticalImageFlip="false" HorizontalImageFlip="true"  Data="46,51,56,61"  FrameTime="0.05" />
+        <Frame Type="DieRightOutward"   VerticalImageFlip="false" HorizontalImageFlip="false" Data="46,51,56,61"  FrameTime="0.05" />
+      </TextureAnimStateComponent>
+    </Actor>
+  </Actors>
+</World>

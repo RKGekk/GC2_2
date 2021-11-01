@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PlayerOptions>
+  <Graphics>
+    <Renderer>Direct3D 11</Renderer>
+    <Width>1280</Width>
+    <Height>720</Height>
+    <RunFullSpeed>no</RunFullSpeed>
+    <FullScreen>no</FullScreen>
+    <DebugUI>true</DebugUI>
+  </Graphics>
+  <Camera>
+    <ScreenFar>10</ScreenFar>
+    <ScreenNear>0.1</ScreenNear>
+    <Fov>45.0</Fov>
+    <GameCameraOffsetX>0.0</GameCameraOffsetX>
+    <GameCameraOffsetY>0.0</GameCameraOffsetY>
+    <GameCameraOffsetZ>-2.0</GameCameraOffsetZ>
+    <GameCameraRotateX>0.0</GameCameraRotateX>
+  </Camera>
+  <Fog>
+    <FogStart>10.0</FogStart>
+    <FogRange>10.0</FogRange>
+    <FogColor r="0.000000" g="0.000000" b="0.000000" a="1.000000"/>;
+  </Fog>
+  <Sound sfxVolume="50" musicVolume="25"/>
+</PlayerOptions>
