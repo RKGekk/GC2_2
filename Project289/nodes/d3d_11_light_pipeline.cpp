@@ -384,6 +384,10 @@ HRESULT D3D11LightPipeline::VPreRender(Scene* pScene) {
 }
 
 HRESULT D3D11LightPipeline::VPostRender(Scene* pScene) {
+	D3DRenderer11* renderer = static_cast<D3DRenderer11*>(g_pApp->GetRenderer());
+	ID3D11DeviceContext* deviceContext = renderer->GetDeviceContext();
+	ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
+	deviceContext->PSSetShaderResources(m_shadow_srv_start_slot, 1, nullSRV);
 	return SceneNode::VPostRender(pScene);
 }
 

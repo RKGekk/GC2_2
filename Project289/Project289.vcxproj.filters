@@ -1464,5 +1464,62 @@
     <None Include="data\textures\loading3.jpg">
       <Filter>Resource Files\textures</Filter>
     </None>
+    <None Include="data\textures\daemon.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\death_knight.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\dragon.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\elven_archer.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\footman.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\goblin_sappers.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\grunt.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\gryphon_rider.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\knight.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\mage.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\ogre.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\peasant.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\peasant_with_gold.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\peasant_with_wood.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\peon.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\peon_with_gold.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\peon_with_wood.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\skeleton.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\troll.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
   </ItemGroup>
 </Project>

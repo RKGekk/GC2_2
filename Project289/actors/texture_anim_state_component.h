@@ -45,7 +45,7 @@ public:
 	virtual TiXmlElement* VGenerateXml() override;
 
 protected:
-	DirectX::XMFLOAT4X4 m_text_transform;
+	DirectX::XMFLOAT4X4 m_tex_transform;
 	float m_anim_time;
 	int m_atlas_width;
 	int m_atlas_height;

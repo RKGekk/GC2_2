@@ -127,9 +127,9 @@ void XLogic::EnvironmentLoadedDelegate(IEventDataPtr pEventData) {
 		DirectX::XMMATRIX trans = DirectX::XMMatrixTranslation(0.0f, 1.0f, -3.0f);
 		levelView->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
 
-		std::shared_ptr<DelayProcess> execCam1 = std::make_shared<DelayProcess>(30.0f, [](float dt, float tt, float n) {
+		std::shared_ptr<DelayProcess> execCam1 = std::make_shared<DelayProcess>(300.0f, [](float dt, float tt, float n) {
 			DirectX::XMMATRIX trans = DirectX::XMMatrixTranslation(tt * 0.125f, 1.0f, -2.0f);
-			g_pApp->GetHumanView()->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
+			//g_pApp->GetHumanView()->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
 			return true;
 		});
 		std::shared_ptr<ExecProcess> execCam2 = std::make_shared<ExecProcess>([]() {

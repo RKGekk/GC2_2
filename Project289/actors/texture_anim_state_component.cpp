@@ -11,7 +11,7 @@ const std::string& TextureAnimStateComponent::VGetName() const {
 }
 
 TextureAnimStateComponent::TextureAnimStateComponent() {
-	DirectX::XMStoreFloat4x4(&m_text_transform, DirectX::XMMatrixIdentity());
+	DirectX::XMStoreFloat4x4(&m_tex_transform, DirectX::XMMatrixIdentity());
 	m_anim_time = 0.0f;
 	m_current_state = PersCurrentStateEnum::IdleToward;
 
@@ -20,44 +20,47 @@ TextureAnimStateComponent::TextureAnimStateComponent() {
 
 	m_total_time = 0.0f;
 
-	m_walk_left_from = 1;
-	m_walk_left_to = 1;
-	m_walk_left_frame_time = 0.016f;
-	m_walk_right_from = 1;
-	m_walk_right_to = 1;
-	m_walk_right_frame_time = 0.016f;
-	m_walk_toward_from = 1;
-	m_walk_toward_to = 1;
-	m_walk_toward_frame_time = 0.016f;
-	m_walk_outward_from = 1;
-	m_walk_outward_to = 1;
-	m_walk_outward_frame_time = 0.016f;
-
-	m_jump_left_from = 1;
-	m_jump_left_to = 1;
-	m_jump_left_frame_time = 0.016f;
-	m_jump_right_from = 1;
-	m_jump_right_to = 1;
-	m_jump_right_frame_time = 0.016f;
-	m_jump_toward_from = 1;
-	m_jump_toward_to = 1;
-	m_jump_toward_frame_time = 0.016f;
-	m_jump_outward_from = 1;
-	m_jump_outward_to = 1;
-	m_jump_outward_frame_time = 0.016f;
-
-	m_idle_left_from = 1;
-	m_idle_left_to = 1;
-	m_idle_left_frame_time = 0.016f;
-	m_idle_right_from = 1;
-	m_idle_right_to = 1;
-	m_idle_right_frame_time = 0.016f;
-	m_idle_toward_from = 1;
-	m_idle_toward_to = 1;
-	m_idle_toward_frame_time = 0.016f;
-	m_idle_outward_from = 1;
-	m_idle_outward_to = 1;
-	m_idle_outward_frame_time = 0.016f;
+	FrameData frame_data{ false, false, {0}, 0.1f };
+	m_frames_data[PersCurrentStateEnum::WalkLeft] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkRight] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkLeftToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkRightToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkLeftOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::WalkRightOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpLeft] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpRight] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpLeftToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpRightToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpLeftOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::JumpRightOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleLeft] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleRight] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleLeftToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleRightToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleLeftOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::IdleRightOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireLeft] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireRight] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireLeftToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireRightToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireLeftOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::FireRightOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieLeft] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieRight] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieLeftToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieRightToward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieLeftOutward] = frame_data;
+	m_frames_data[PersCurrentStateEnum::DieRightOutward] = frame_data;
 }
 
 TextureAnimStateComponent::~TextureAnimStateComponent() {}
@@ -119,8 +122,6 @@ bool TextureAnimStateComponent::VInit(TiXmlElement* pData) {
 		m_atlas_height = std::stoi(sAtlasHeight);
 	}
 
-
-
 	TiXmlElement* pFrame = pData->FirstChildElement("Frame");
 	while (pFrame) {
 		FrameData frame_data;
@@ -129,11 +130,13 @@ bool TextureAnimStateComponent::VInit(TiXmlElement* pData) {
 		std::string sType(cType == nullptr ? "" : cType);
 		PersCurrentStateEnum state_enum = decodeStateEnum(sType);
 
-		std::string sVerticalImageFlip = pFrame->FirstChild()->Value();
+		const char* cVerticalImageFlip = pFrame->Attribute("VerticalImageFlip");
+		std::string sVerticalImageFlip(cVerticalImageFlip == nullptr ? "" : cVerticalImageFlip);
 		std::for_each(sVerticalImageFlip.begin(), sVerticalImageFlip.end(), [](char& c) { c = ::toupper(c); });
 		frame_data.VerticalFlip = (sVerticalImageFlip == "YES" || sVerticalImageFlip == "TRUE" || sVerticalImageFlip == "1") ? true : false;
 
-		std::string sHorizontalImageFlip = pFrame->FirstChild()->Value();
+		const char* cHorizontalImageFlip = pFrame->Attribute("VerticalImageFlip");
+		std::string sHorizontalImageFlip = (cHorizontalImageFlip == nullptr ? "" : cHorizontalImageFlip);
 		std::for_each(sHorizontalImageFlip.begin(), sHorizontalImageFlip.end(), [](char& c) { c = ::toupper(c); });
 		frame_data.HorizontalFlip = (sHorizontalImageFlip == "YES" || sHorizontalImageFlip == "TRUE" || sHorizontalImageFlip == "1") ? true : false;
 
@@ -157,107 +160,38 @@ void TextureAnimStateComponent::VPostInit() {}
 
 void TextureAnimStateComponent::VUpdate(float deltaMs) {
 	using namespace DirectX;
+	m_total_time += deltaMs;
 	std::shared_ptr<ParticleComponent> pParticleComponent = MakeStrongPtr(GetOwner()->GetComponent<ParticleComponent>(ParticleComponent::g_Name));
+	const FrameData& current_state_data = m_frames_data.at(m_current_state);
 
-	PersCurrentStateEnum state = m_current_state;
-	int start_frame_num = 0;
-	int total_frames_num = 0;
-	int frames_per_row = m_atlas_width;
-	float frame_time = 0.5f;
-	switch (state) {
-	case PersCurrentStateEnum::WalkLeft:
-		start_frame_num = m_walk_left_from;
-		total_frames_num = m_walk_left_to - m_walk_left_from + 1;
-		frame_time = m_walk_left_frame_time;
-		break;
-	case PersCurrentStateEnum::WalkRight:
-		start_frame_num = m_walk_right_from;
-		total_frames_num = m_walk_right_to - m_walk_right_from + 1;
-		frame_time = m_walk_right_frame_time;
-		break;
-	case PersCurrentStateEnum::WalkToward:
-		start_frame_num = m_walk_toward_from;
-		total_frames_num = m_walk_toward_to - m_walk_toward_from + 1;
-		frame_time = m_walk_toward_frame_time;
-		break;
-	case PersCurrentStateEnum::WalkOutward:
-		start_frame_num = m_walk_outward_from;
-		total_frames_num = m_walk_outward_to - m_walk_outward_from + 1;
-		frame_time = m_walk_outward_frame_time;
-		break;
-	case PersCurrentStateEnum::JumpLeft:
-		start_frame_num = m_jump_left_from;
-		total_frames_num = m_jump_left_to - m_jump_left_from + 1;
-		frame_time = m_jump_left_frame_time;
-		break;
-	case PersCurrentStateEnum::JumpRight:
-		start_frame_num = m_jump_right_from;
-		total_frames_num = m_jump_right_to - m_jump_right_from + 1;
-		frame_time = m_jump_right_frame_time;
-		break;
-	case PersCurrentStateEnum::JumpToward:
-		start_frame_num = m_jump_toward_from;
-		total_frames_num = m_jump_toward_to - m_jump_toward_from + 1;
-		frame_time = m_jump_toward_frame_time;
-		break;
-	case PersCurrentStateEnum::JumpOutward:
-		start_frame_num = m_jump_outward_from;
-		total_frames_num = m_jump_outward_to - m_jump_outward_from + 1;
-		frame_time = m_jump_outward_frame_time;
-		break;
-	case PersCurrentStateEnum::IdleLeft:
-		start_frame_num = m_idle_left_from;
-		total_frames_num = m_idle_left_to - m_idle_left_from + 1;
-		frame_time = m_idle_left_frame_time;
-		break;
-	case PersCurrentStateEnum::IdleRight:
-		start_frame_num = m_idle_right_from;
-		total_frames_num = m_idle_right_to - m_idle_right_from + 1;
-		frame_time = m_idle_right_frame_time;
-		break;
-	case PersCurrentStateEnum::IdleToward:
-		start_frame_num = m_idle_toward_from;
-		total_frames_num = m_idle_toward_to - m_idle_toward_from + 1;
-		frame_time = m_idle_toward_frame_time;
-		break;
-	case PersCurrentStateEnum::IdleOutward:
-		start_frame_num = m_idle_outward_from;
-		total_frames_num = m_idle_outward_to - m_idle_outward_from + 1;
-		frame_time = m_idle_outward_frame_time;
-		break;
-	default:
-		break;
-	}
+	int total_frames_num = current_state_data.Data.size();
+	float frame_time = current_state_data.FrameTime;
+
 	float total_anim_time = frame_time * ((float)total_frames_num);
-	if (m_anim_time > total_anim_time && state != PersCurrentStateEnum::IdleToward) {
-		std::string fsddf = "";
-	}
 	float loop_time = std::fmodf(m_anim_time, total_anim_time);
-	int current_frame = (int)(loop_time / frame_time) % total_frames_num;
-	float frame_shift = start_frame_num % frames_per_row;
-	float row_shift = start_frame_num / frames_per_row;
-
+	int frame_num_couner = (int)(loop_time / frame_time);
+	int current_frame_num = current_state_data.Data[frame_num_couner];
+	float frame_shift = current_frame_num % m_atlas_width;
+	float row_shift = current_frame_num / current_frame_num;
 
 	float frame_u = 1.0f / ((float)m_atlas_width);
 	float frame_v = 1.0f / ((float)m_atlas_height);
 
 	XMMATRIX scale_to_one_frame = XMMatrixScaling(frame_u, frame_v, 1.0f);
-	//XMMATRIX translation = XMMatrixTranslation(frame_u * 0.0f, frame_v * 2.0f, 0.0f);
-	XMMATRIX translation = XMMatrixTranslation(frame_u * (frame_shift + current_frame), frame_v * row_shift, 0.0f);
-	//XMMATRIX translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	XMMATRIX translation = XMMatrixTranslation(frame_u * frame_shift, frame_v * row_shift, 0.0f);
 
 	XMMATRIX transform = XMMatrixMultiply(scale_to_one_frame, translation);
-	XMStoreFloat4x4(&m_text_transform, transform);
+	XMStoreFloat4x4(&m_tex_transform, transform);
 	m_anim_time += deltaMs;
 }
 
 DirectX::XMFLOAT4X4 TextureAnimStateComponent::GetTexTransform4x4() {
-	return m_text_transform;
+	return m_tex_transform;
 }
 
 DirectX::XMFLOAT4X4 TextureAnimStateComponent::GetTexTransform4x4T() {
 	DirectX::XMFLOAT4X4 res;
-	DirectX::XMStoreFloat4x4(&res, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&m_text_transform)));
+	DirectX::XMStoreFloat4x4(&res, DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&m_tex_transform)));
 	return res;
 }
 
@@ -268,44 +202,80 @@ PersCurrentStateEnum TextureAnimStateComponent::GetState() {
 PersCurrentStateClassEnum TextureAnimStateComponent::GetStateClass() {
 	PersCurrentStateClassEnum res = PersCurrentStateClassEnum::Idle;
 	switch (m_current_state) {
-	case PersCurrentStateEnum::WalkLeft:
-		res = PersCurrentStateClassEnum::Walk;
-		break;
-	case PersCurrentStateEnum::WalkRight:
-		res = PersCurrentStateClassEnum::Walk;
-		break;
-	case PersCurrentStateEnum::WalkToward:
-		res = PersCurrentStateClassEnum::Walk;
-		break;
-	case PersCurrentStateEnum::WalkOutward:
-		res = PersCurrentStateClassEnum::Walk;
-		break;
-	case PersCurrentStateEnum::JumpLeft:
-		res = PersCurrentStateClassEnum::Jump;
-		break;
-	case PersCurrentStateEnum::JumpRight:
-		res = PersCurrentStateClassEnum::Jump;
-		break;
-	case PersCurrentStateEnum::JumpToward:
-		res = PersCurrentStateClassEnum::Jump;
-		break;
-	case PersCurrentStateEnum::JumpOutward:
-		res = PersCurrentStateClassEnum::Jump;
-		break;
-	case PersCurrentStateEnum::IdleLeft:
-		res = PersCurrentStateClassEnum::Idle;
-		break;
-	case PersCurrentStateEnum::IdleRight:
-		res = PersCurrentStateClassEnum::Idle;
-		break;
-	case PersCurrentStateEnum::IdleToward:
-		res = PersCurrentStateClassEnum::Idle;
-		break;
-	case PersCurrentStateEnum::IdleOutward:
-		res = PersCurrentStateClassEnum::Idle;
-		break;
-	default:
-		break;
+		case PersCurrentStateEnum::WalkLeft:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkRight:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkToward:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkOutward:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkLeftToward:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkRightToward:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkLeftOutward:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::WalkRightOutward:
+			res = PersCurrentStateClassEnum::Walk;
+			break;
+		case PersCurrentStateEnum::JumpLeft:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpRight:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpToward:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpOutward:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpLeftToward:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpRightToward:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpLeftOutward:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::JumpRightOutward:
+			res = PersCurrentStateClassEnum::Jump;
+			break;
+		case PersCurrentStateEnum::IdleLeft:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleRight:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleToward:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleOutward:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleLeftToward:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleRightToward:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleLeftOutward:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		case PersCurrentStateEnum::IdleRightOutward:
+			res = PersCurrentStateClassEnum::Idle;
+			break;
+		default:
+			break;
 	}
 
 	return res;
@@ -314,44 +284,80 @@ PersCurrentStateClassEnum TextureAnimStateComponent::GetStateClass() {
 PersCurrentOrientClassEnum TextureAnimStateComponent::GetOrientClass() {
 	PersCurrentOrientClassEnum res = PersCurrentOrientClassEnum::Toward;
 	switch (m_current_state) {
-	case PersCurrentStateEnum::WalkLeft:
-		res = PersCurrentOrientClassEnum::Left;
-		break;
-	case PersCurrentStateEnum::WalkRight:
-		res = PersCurrentOrientClassEnum::Right;
-		break;
-	case PersCurrentStateEnum::WalkToward:
-		res = PersCurrentOrientClassEnum::Toward;
-		break;
-	case PersCurrentStateEnum::WalkOutward:
-		res = PersCurrentOrientClassEnum::Outward;
-		break;
-	case PersCurrentStateEnum::JumpLeft:
-		res = PersCurrentOrientClassEnum::Left;
-		break;
-	case PersCurrentStateEnum::JumpRight:
-		res = PersCurrentOrientClassEnum::Right;
-		break;
-	case PersCurrentStateEnum::JumpToward:
-		res = PersCurrentOrientClassEnum::Toward;
-		break;
-	case PersCurrentStateEnum::JumpOutward:
-		res = PersCurrentOrientClassEnum::Outward;
-		break;
-	case PersCurrentStateEnum::IdleLeft:
-		res = PersCurrentOrientClassEnum::Left;
-		break;
-	case PersCurrentStateEnum::IdleRight:
-		res = PersCurrentOrientClassEnum::Right;
-		break;
-	case PersCurrentStateEnum::IdleToward:
-		res = PersCurrentOrientClassEnum::Toward;
-		break;
-	case PersCurrentStateEnum::IdleOutward:
-		res = PersCurrentOrientClassEnum::Outward;
-		break;
-	default:
-		break;
+		case PersCurrentStateEnum::WalkLeft:
+			res = PersCurrentOrientClassEnum::Left;
+			break;
+		case PersCurrentStateEnum::WalkRight:
+			res = PersCurrentOrientClassEnum::Right;
+			break;
+		case PersCurrentStateEnum::WalkToward:
+			res = PersCurrentOrientClassEnum::Toward;
+			break;
+		case PersCurrentStateEnum::WalkOutward:
+			res = PersCurrentOrientClassEnum::Outward;
+			break;
+		case PersCurrentStateEnum::WalkLeftToward:
+			res = PersCurrentOrientClassEnum::LeftToward;
+			break;
+		case PersCurrentStateEnum::WalkRightToward:
+			res = PersCurrentOrientClassEnum::RightToward;
+			break;
+		case PersCurrentStateEnum::WalkLeftOutward:
+			res = PersCurrentOrientClassEnum::LeftOutward;
+			break;
+		case PersCurrentStateEnum::WalkRightOutward:
+			res = PersCurrentOrientClassEnum::RightOutward;
+			break;
+		case PersCurrentStateEnum::JumpLeft:
+			res = PersCurrentOrientClassEnum::Left;
+			break;
+		case PersCurrentStateEnum::JumpRight:
+			res = PersCurrentOrientClassEnum::Right;
+			break;
+		case PersCurrentStateEnum::JumpToward:
+			res = PersCurrentOrientClassEnum::Toward;
+			break;
+		case PersCurrentStateEnum::JumpOutward:
+			res = PersCurrentOrientClassEnum::Outward;
+			break;
+		case PersCurrentStateEnum::JumpLeftToward:
+			res = PersCurrentOrientClassEnum::LeftToward;
+			break;
+		case PersCurrentStateEnum::JumpRightToward:
+			res = PersCurrentOrientClassEnum::RightToward;
+			break;
+		case PersCurrentStateEnum::JumpLeftOutward:
+			res = PersCurrentOrientClassEnum::LeftOutward;
+			break;
+		case PersCurrentStateEnum::JumpRightOutward:
+			res = PersCurrentOrientClassEnum::RightOutward;
+			break;
+		case PersCurrentStateEnum::IdleLeft:
+			res = PersCurrentOrientClassEnum::Left;
+			break;
+		case PersCurrentStateEnum::IdleRight:
+			res = PersCurrentOrientClassEnum::Right;
+			break;
+		case PersCurrentStateEnum::IdleToward:
+			res = PersCurrentOrientClassEnum::Toward;
+			break;
+		case PersCurrentStateEnum::IdleOutward:
+			res = PersCurrentOrientClassEnum::Outward;
+			break;
+		case PersCurrentStateEnum::IdleLeftToward:
+			res = PersCurrentOrientClassEnum::LeftToward;
+			break;
+		case PersCurrentStateEnum::IdleRightToward:
+			res = PersCurrentOrientClassEnum::RightToward;
+			break;
+		case PersCurrentStateEnum::IdleLeftOutward:
+			res = PersCurrentOrientClassEnum::LeftOutward;
+			break;
+		case PersCurrentStateEnum::IdleRightOutward:
+			res = PersCurrentOrientClassEnum::RightOutward;
+			break;
+		default:
+			break;
 	}
 
 	return res;
@@ -359,7 +365,7 @@ PersCurrentOrientClassEnum TextureAnimStateComponent::GetOrientClass() {
 
 void TextureAnimStateComponent::SetState(PersCurrentStateEnum state) {
 	m_current_state = state;
-	//m_anim_time = 0.0f;
+	m_anim_time = 0.0f;
 }
 
 TiXmlElement* TextureAnimStateComponent::VGenerateXml() {
