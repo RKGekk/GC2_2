@@ -119,10 +119,12 @@ D3D11LightPipeline::D3D11LightPipeline(int mesh_id, MeshRenderLightComponent& da
 
 	m_primitive_topology_type = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
+	D3D11_TEXTURE_ADDRESS_MODE first_address_mode_u = data.GetDiffuseTextureAddressModeU();
+	D3D11_TEXTURE_ADDRESS_MODE first_address_mode_v = data.GetDiffuseTextureAddressModeV();
 	D3D11_SAMPLER_DESC samplerDesc0;
 	samplerDesc0.Filter = D3D11_FILTER_ANISOTROPIC;
-	samplerDesc0.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc0.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc0.AddressU = first_address_mode_u;
+	samplerDesc0.AddressV = first_address_mode_v;
 	samplerDesc0.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc0.MipLODBias = 0.0f;
 	samplerDesc0.MaxAnisotropy = 4;

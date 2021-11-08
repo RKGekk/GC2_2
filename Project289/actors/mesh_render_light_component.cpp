@@ -20,7 +20,7 @@ const std::string& MeshRenderLightComponent::VGetName() const {
 	return g_Name;
 }
 
-MeshRenderLightComponent::MeshRenderLightComponent() : m_auto_radius(false), m_radius(0.0f), m_alpha_blend(false), m_scale(1.0f) {}
+MeshRenderLightComponent::MeshRenderLightComponent() : m_auto_radius(false), m_radius(0.0f), m_alpha_blend(false), m_diffuse_texture_address_mode_u(D3D11_TEXTURE_ADDRESS_WRAP), m_diffuse_texture_address_mode_v(D3D11_TEXTURE_ADDRESS_WRAP), m_scale(1.0f) {}
 
 const std::string& MeshRenderLightComponent::GetPixelShaderResource() const {
 	return m_pixelShaderResource;
@@ -40,6 +40,14 @@ const MeshHolder& MeshRenderLightComponent::GetMesh(int key) const {
 
 bool MeshRenderLightComponent::GetAlphaBlend() const {
 	return m_alpha_blend;
+}
+
+D3D11_TEXTURE_ADDRESS_MODE MeshRenderLightComponent::GetDiffuseTextureAddressModeU() const {
+	return m_diffuse_texture_address_mode_u;
+}
+
+D3D11_TEXTURE_ADDRESS_MODE MeshRenderLightComponent::GetDiffuseTextureAddressModeV() const {
+	return m_diffuse_texture_address_mode_v;
 }
 
 float MeshRenderLightComponent::GetFogStart() const {
@@ -77,6 +85,49 @@ bool MeshRenderLightComponent::VDelegateInit(TiXmlElement* pData) {
 			m_radius = radius;
 		}
 	}
+
+	TiXmlElement* pDiffuseTextureAddressModeV = pData->FirstChildElement("DiffuseTextureAddressModeV");
+	if (pDiffuseTextureAddressModeV) {
+		std::string address_mode_str = pDiffuseTextureAddressModeV->FirstChild()->Value();
+		std::for_each(address_mode_str.begin(), address_mode_str.end(), [](char& c) { c = ::toupper(c); });
+		if (address_mode_str == "MIRROR") {
+			m_diffuse_texture_address_mode_v = D3D11_TEXTURE_ADDRESS_MIRROR;
+		}
+		else if (address_mode_str == "CLAMP") {
+			m_diffuse_texture_address_mode_v = D3D11_TEXTURE_ADDRESS_CLAMP;
+		}
+		else if (address_mode_str == "BORDER") {
+			m_diffuse_texture_address_mode_v = D3D11_TEXTURE_ADDRESS_BORDER;
+		}
+		else if (address_mode_str == "MIRROR_ONCE") {
+			m_diffuse_texture_address_mode_v = D3D11_TEXTURE_ADDRESS_MIRROR_ONCE;
+		}
+		else {
+			m_diffuse_texture_address_mode_v = D3D11_TEXTURE_ADDRESS_WRAP;
+		}
+	}
+
+	TiXmlElement* pDiffuseTextureAddressModeU = pData->FirstChildElement("DiffuseTextureAddressModeU");
+	if (pDiffuseTextureAddressModeU) {
+		std::string address_mode_str = pDiffuseTextureAddressModeU->FirstChild()->Value();
+		std::for_each(address_mode_str.begin(), address_mode_str.end(), [](char& c) { c = ::toupper(c); });
+		if (address_mode_str == "MIRROR") {
+			m_diffuse_texture_address_mode_u = D3D11_TEXTURE_ADDRESS_MIRROR;
+		}
+		else if (address_mode_str == "CLAMP") {
+			m_diffuse_texture_address_mode_u = D3D11_TEXTURE_ADDRESS_CLAMP;
+		}
+		else if (address_mode_str == "BORDER") {
+			m_diffuse_texture_address_mode_u = D3D11_TEXTURE_ADDRESS_BORDER;
+		}
+		else if (address_mode_str == "MIRROR_ONCE") {
+			m_diffuse_texture_address_mode_u = D3D11_TEXTURE_ADDRESS_MIRROR_ONCE;
+		}
+		else {
+			m_diffuse_texture_address_mode_u = D3D11_TEXTURE_ADDRESS_WRAP;
+		}
+	}
+
 	TiXmlElement* pAlphaBlend = pData->FirstChildElement("AlphaBlend");
 	if (pAlphaBlend) {
 		std::string alpha_blend_str = pAlphaBlend->FirstChild()->Value();

@@ -269,7 +269,7 @@ float4 main(PS_INPUT input) : SV_TARGET{
 	litColor *= alphall;*/
 
 	float alpha = texColor.a;
-	float alphae = clamp(1.0f - (exp(3.0f * (1.0f - alpha)) - 1.0f), 0.0f, 1.0f);
+	float alphae = clamp(1.0f - (exp(1.75f * (1.0f - alpha)) - 1.0f), 0.0f, 1.0f);
 	litColor *= alphae;
 
 	//float alpha = texColor.a;

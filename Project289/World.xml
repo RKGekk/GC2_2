@@ -21,6 +21,8 @@
       </TransformComponent>
       <MeshRenderLightComponent>
         <Color r="0.500000" g="0.500000" b="0.500000" a="1.000000" />
+        <AlphaBlend>true</AlphaBlend>
+        <DiffuseTextureAddressModeU>mirror</DiffuseTextureAddressModeU>
         <PixelShader>pixel_shader_basic_light_alpha2.cso</PixelShader>
         <VertexShader>vertex_shader_light.cso</VertexShader>
         <Radius>auto</Radius>

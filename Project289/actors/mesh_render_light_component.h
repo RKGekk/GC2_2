@@ -32,6 +32,8 @@ class MeshRenderLightComponent : public BaseRenderComponent {
     bool m_auto_radius;
     float m_radius;
     bool m_alpha_blend;
+    D3D11_TEXTURE_ADDRESS_MODE m_diffuse_texture_address_mode_u;
+    D3D11_TEXTURE_ADDRESS_MODE m_diffuse_texture_address_mode_v;
 
     static constexpr float m_max = std::numeric_limits<float>::max();
     static constexpr float m_min = std::numeric_limits<float>::min();
@@ -55,6 +57,8 @@ public:
     const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetLayout() const;
     const MeshHolder& GetMesh(int key) const;
     bool GetAlphaBlend() const;
+    D3D11_TEXTURE_ADDRESS_MODE GetDiffuseTextureAddressModeU() const;
+    D3D11_TEXTURE_ADDRESS_MODE GetDiffuseTextureAddressModeV() const;
     float GetFogStart() const;
     float GetFogRange() const;
     DirectX::XMFLOAT4 GetFogColor() const;

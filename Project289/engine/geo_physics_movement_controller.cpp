@@ -94,47 +94,143 @@ void GeoPhysicsMovementController::DefineStateKeyDown(const BYTE c) {
 	PersCurrentOrientClassEnum current_orient_class = anim_state->GetOrientClass();
 
 	if (c == 'W') {
-		if (current_state_class == PersCurrentStateClassEnum::Walk) {
-			anim_state->SetState(PersCurrentStateEnum::WalkOutward);
+		if (m_bKey['D']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpRightOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightOutward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Jump) {
-			anim_state->SetState(PersCurrentStateEnum::JumpOutward);
+		else if (m_bKey['A']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpLeftOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftOutward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Idle) {
-			anim_state->SetState(PersCurrentStateEnum::WalkOutward);
+		else {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkOutward);
+			}
 		}
 	}
 	if (c == 'S') {
-		if (current_state_class == PersCurrentStateClassEnum::Walk) {
-			anim_state->SetState(PersCurrentStateEnum::WalkToward);
+		if (m_bKey['A']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpLeftToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftToward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Jump) {
-			anim_state->SetState(PersCurrentStateEnum::JumpToward);
+		else if (m_bKey['D']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpRightToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightToward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Idle) {
-			anim_state->SetState(PersCurrentStateEnum::WalkToward);
+		else {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkToward);
+			}
 		}
 	}
 	if (c == 'A') {
-		if (current_state_class == PersCurrentStateClassEnum::Walk) {
-			anim_state->SetState(PersCurrentStateEnum::WalkLeft);
+		if (m_bKey['W']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpLeftOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftOutward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Jump) {
-			anim_state->SetState(PersCurrentStateEnum::JumpLeft);
+		else if (m_bKey['S']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpLeftToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeftToward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Idle) {
-			anim_state->SetState(PersCurrentStateEnum::WalkLeft);
+		else {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeft);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpLeft);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkLeft);
+			}
 		}
 	}
 	if (c == 'D') {
-		if (current_state_class == PersCurrentStateClassEnum::Walk) {
-			anim_state->SetState(PersCurrentStateEnum::WalkRight);
+		if (m_bKey['W']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpRightOutward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightOutward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Jump) {
-			anim_state->SetState(PersCurrentStateEnum::JumpRight);
+		else if (m_bKey['S']) {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpRightToward);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRightToward);
+			}
 		}
-		if (current_state_class == PersCurrentStateClassEnum::Idle) {
-			anim_state->SetState(PersCurrentStateEnum::WalkRight);
+		else {
+			if (current_state_class == PersCurrentStateClassEnum::Walk) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRight);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Jump) {
+				anim_state->SetState(PersCurrentStateEnum::JumpRight);
+			}
+			if (current_state_class == PersCurrentStateClassEnum::Idle) {
+				anim_state->SetState(PersCurrentStateEnum::WalkRight);
+			}
 		}
 	}
 
@@ -456,13 +552,17 @@ bool GeoPhysicsMovementController::VOnPointerButtonUp(int x, int y, const int ra
 }
 
 bool GeoPhysicsMovementController::VOnKeyDown(const BYTE c) {
+	if (m_bKey[c]) return true;
+	
 	DefineStateKeyDown(c);
-
 	m_bKey[c] = true;
+	
 	return true;
 }
 
 bool GeoPhysicsMovementController::VOnKeyUp(const BYTE c) {
+	if (!m_bKey[c]) return true;
+
 	DefineStateKeyUp(c);
 
 	if (c == 'I') {

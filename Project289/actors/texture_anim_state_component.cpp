@@ -73,6 +73,7 @@ PersCurrentStateEnum decodeStateEnum(const std::string& sType) {
 	if (sType == "WalkLeftToward"s) return PersCurrentStateEnum::WalkLeftToward;
 	if (sType == "WalkRightToward"s) return PersCurrentStateEnum::WalkRightToward;
 	if (sType == "WalkLeftOutward"s) return PersCurrentStateEnum::WalkLeftOutward;
+	if (sType == "WalkRightOutward"s) return PersCurrentStateEnum::WalkRightOutward;
 	if (sType == "JumpLeft"s) return PersCurrentStateEnum::JumpLeft;
 	if (sType == "JumpRight"s) return PersCurrentStateEnum::JumpRight;
 	if (sType == "JumpToward"s) return PersCurrentStateEnum::JumpToward;
@@ -135,7 +136,7 @@ bool TextureAnimStateComponent::VInit(TiXmlElement* pData) {
 		std::for_each(sVerticalImageFlip.begin(), sVerticalImageFlip.end(), [](char& c) { c = ::toupper(c); });
 		frame_data.VerticalFlip = (sVerticalImageFlip == "YES" || sVerticalImageFlip == "TRUE" || sVerticalImageFlip == "1") ? true : false;
 
-		const char* cHorizontalImageFlip = pFrame->Attribute("VerticalImageFlip");
+		const char* cHorizontalImageFlip = pFrame->Attribute("HorizontalImageFlip");
 		std::string sHorizontalImageFlip = (cHorizontalImageFlip == nullptr ? "" : cHorizontalImageFlip);
 		std::for_each(sHorizontalImageFlip.begin(), sHorizontalImageFlip.end(), [](char& c) { c = ::toupper(c); });
 		frame_data.HorizontalFlip = (sHorizontalImageFlip == "YES" || sHorizontalImageFlip == "TRUE" || sHorizontalImageFlip == "1") ? true : false;
@@ -178,7 +179,10 @@ void TextureAnimStateComponent::VUpdate(float deltaMs) {
 	float frame_v = 1.0f / ((float)m_atlas_height);
 
 	XMMATRIX scale_to_one_frame = XMMatrixScaling(frame_u, frame_v, 1.0f);
-	XMMATRIX translation = XMMatrixTranslation(frame_u * frame_shift, frame_v * row_shift, 0.0f);
+	float frame_u_shift = frame_u * frame_shift;
+	if (current_state_data.HorizontalFlip) frame_u_shift = (1.0f - frame_u_shift) - 1.0f - frame_u;
+	float frame_v_shift = frame_v * row_shift;
+	XMMATRIX translation = XMMatrixTranslation(frame_u_shift, frame_v_shift, 0.0f);
 
 	XMMATRIX transform = XMMatrixMultiply(scale_to_one_frame, translation);
 	XMStoreFloat4x4(&m_tex_transform, transform);
