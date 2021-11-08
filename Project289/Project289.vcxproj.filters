@@ -1348,6 +1348,9 @@
     <FxCompile Include="data\shaders\pixel_shader_light_nlswsp_inv_ny.hlsl">
       <Filter>Resource Files\shaders</Filter>
     </FxCompile>
+    <FxCompile Include="data\shaders\pixel_shader_basic_light_alpha2.hlsl">
+      <Filter>Resource Files\shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\textures\pinksquare.jpg">
@@ -1520,6 +1523,27 @@
     </None>
     <None Include="data\textures\troll.png">
       <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\objects\uplane.obj">
+      <Filter>Resource Files\models</Filter>
+    </None>
+    <None Include="data\objects\uplane.mtl">
+      <Filter>Resource Files\models</Filter>
+    </None>
+    <None Include="data\textures\planet1_None_BaseColor.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\planet1_None_Normal.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\textures\planet1_None_OcclusionRoughnessMetallic.png">
+      <Filter>Resource Files\textures</Filter>
+    </None>
+    <None Include="data\objects\planet1.mtl">
+      <Filter>Resource Files\models</Filter>
+    </None>
+    <None Include="data\objects\planet1.obj">
+      <Filter>Resource Files\models</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -186,6 +186,8 @@ float4 main(PS_INPUT input) : SV_TARGET {
 	float4 texColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	texColor = gDiffuseMap.Sample(DiffuseMapSamplerState, input.uv);
 	clip(texColor.a - 0.05f);
+	//clip(texColor.a);
+	//clip(1.0f - texColor.a - 0.05f);
 	
 	input.normal = normalize(input.normal);
 	float3 toEye = gEyePosW - input.worldPos;

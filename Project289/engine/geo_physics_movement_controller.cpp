@@ -4,7 +4,8 @@
 #include "../actors/transform_component.h"
 #include "../actors/orientation_relation_component.h"
 #include "../actors/particle_component.h"
-#include "../actors/pers_texture_anim_state_component.h"
+//#include "../actors/pers_texture_anim_state_component.h"
+#include "../actors/texture_anim_state_component.h"
 #include "../tools/mt_random.h"
 #include "../tools/memory_utility.h"
 
@@ -47,9 +48,9 @@ void GeoPhysicsMovementController::SetState(PersCurrentStateEnum state) {
 	if (!m_object) { return; }
 	ActorId act_id = m_object->VFindMyActor();
 	std::shared_ptr<Actor> act = MakeStrongPtr(g_pApp->GetGameLogic()->VGetActor(act_id));
-	std::shared_ptr<PersTextureAnimStateComponent> tasc;
+	std::shared_ptr<TextureAnimStateComponent> tasc;
 	if (act) {
-		tasc = MakeStrongPtr(act->GetComponent<PersTextureAnimStateComponent>(ActorComponent::GetIdFromName("PersTextureAnimStateComponent")));
+		tasc = MakeStrongPtr(act->GetComponent<TextureAnimStateComponent>(ActorComponent::GetIdFromName("TextureAnimStateComponent")));
 		tasc->SetState(state);
 	}
 }
@@ -58,9 +59,9 @@ PersCurrentStateEnum GeoPhysicsMovementController::GetState() {
 	if (!m_object) { return PersCurrentStateEnum::IdleToward; }
 	ActorId act_id = m_object->VFindMyActor();
 	std::shared_ptr<Actor> act = MakeStrongPtr(g_pApp->GetGameLogic()->VGetActor(act_id));
-	std::shared_ptr<PersTextureAnimStateComponent> tasc;
+	std::shared_ptr<TextureAnimStateComponent> tasc;
 	if (act) {
-		tasc = MakeStrongPtr(act->GetComponent<PersTextureAnimStateComponent>(ActorComponent::GetIdFromName("PersTextureAnimStateComponent")));
+		tasc = MakeStrongPtr(act->GetComponent<TextureAnimStateComponent>(ActorComponent::GetIdFromName("TextureAnimStateComponent")));
 	}
 	if (tasc) {
 		return tasc->GetState();
@@ -70,22 +71,22 @@ PersCurrentStateEnum GeoPhysicsMovementController::GetState() {
 	}
 }
 
-std::shared_ptr<PersTextureAnimStateComponent> GeoPhysicsMovementController::GetStateComponent() {
-	if (!m_object) { return std::shared_ptr<PersTextureAnimStateComponent>(); }
+std::shared_ptr<TextureAnimStateComponent> GeoPhysicsMovementController::GetStateComponent() {
+	if (!m_object) { return std::shared_ptr<TextureAnimStateComponent>(); }
 	ActorId act_id = m_object->VFindMyActor();
 	std::shared_ptr<Actor> act = MakeStrongPtr(g_pApp->GetGameLogic()->VGetActor(act_id));
 	if (act) {
-		return MakeStrongPtr(act->GetComponent<PersTextureAnimStateComponent>(ActorComponent::GetIdFromName("PersTextureAnimStateComponent")));
+		return MakeStrongPtr(act->GetComponent<TextureAnimStateComponent>(ActorComponent::GetIdFromName("TextureAnimStateComponent")));
 	}
 	else {
-		return std::shared_ptr<PersTextureAnimStateComponent>();
+		return std::shared_ptr<TextureAnimStateComponent>();
 	}
 }
 
 void GeoPhysicsMovementController::DefineStateKeyDown(const BYTE c) {
 	if (!(c == 'W' || c == 'S' || c == 'A' || c == 'D' || c == ' ')) { return; }
 	
-	std::shared_ptr<PersTextureAnimStateComponent> anim_state = GetStateComponent();
+	std::shared_ptr<TextureAnimStateComponent> anim_state = GetStateComponent();
 	if (!anim_state) { return; }
 
 	PersCurrentStateEnum current_state = anim_state->GetState();
@@ -156,7 +157,7 @@ void GeoPhysicsMovementController::DefineStateKeyDown(const BYTE c) {
 void GeoPhysicsMovementController::DefineStateKeyUp(const BYTE c) {
 	if (!(c == 'W' || c == 'S' || c == 'A' || c == 'D' || c == ' ')) { return; }
 
-	std::shared_ptr<PersTextureAnimStateComponent> anim_state = GetStateComponent();
+	std::shared_ptr<TextureAnimStateComponent> anim_state = GetStateComponent();
 	if (!anim_state) { return; }
 
 	PersCurrentStateEnum current_state = anim_state->GetState();

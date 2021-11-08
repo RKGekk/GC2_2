@@ -172,7 +172,7 @@ void TextureAnimStateComponent::VUpdate(float deltaMs) {
 	int frame_num_couner = (int)(loop_time / frame_time);
 	int current_frame_num = current_state_data.Data[frame_num_couner];
 	float frame_shift = current_frame_num % m_atlas_width;
-	float row_shift = current_frame_num / current_frame_num;
+	float row_shift = current_frame_num / m_atlas_width;
 
 	float frame_u = 1.0f / ((float)m_atlas_width);
 	float frame_v = 1.0f / ((float)m_atlas_height);

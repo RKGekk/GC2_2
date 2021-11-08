@@ -124,23 +124,22 @@ void XLogic::EnvironmentLoadedDelegate(IEventDataPtr pEventData) {
 
 		g_pApp->GetGameLogic()->VRemoveView(menuView);
 
-		DirectX::XMMATRIX trans = DirectX::XMMatrixTranslation(0.0f, 1.0f, -3.0f);
-		levelView->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
+		//DirectX::XMMATRIX trans = DirectX::XMMatrixTranslation(0.0f, 1.0f, -3.0f);
+		//levelView->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
+		//std::shared_ptr<DelayProcess> execCam1 = std::make_shared<DelayProcess>(300.0f, [](float dt, float tt, float n) {
+		//	DirectX::XMMATRIX trans = DirectX::XMMatrixTranslation(tt * 0.125f, 1.0f, -2.0f);
+		//	//g_pApp->GetHumanView()->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
+		//	return true;
+		//});
+		//std::shared_ptr<ExecProcess> execCam2 = std::make_shared<ExecProcess>([]() {
+		//	g_pApp->AbortGame();
+		//	return true;
+		//});
+		//execCam1->AttachChild(execCam2);
+		//g_pApp->GetGameLogic()->AttachProcess(execCam1);
 
-		std::shared_ptr<DelayProcess> execCam1 = std::make_shared<DelayProcess>(300.0f, [](float dt, float tt, float n) {
-			DirectX::XMMATRIX trans = DirectX::XMMatrixTranslation(tt * 0.125f, 1.0f, -2.0f);
-			//g_pApp->GetHumanView()->VGetCamera()->VSetTransform(trans, DirectX::XMMatrixIdentity(), true);
-			return true;
-		});
-		std::shared_ptr<ExecProcess> execCam2 = std::make_shared<ExecProcess>([]() {
-			g_pApp->AbortGame();
-			return true;
-		});
-		execCam1->AttachChild(execCam2);
-		g_pApp->GetGameLogic()->AttachProcess(execCam1);
-
-		/*StrongActorPtr pActorTeapot = MakeStrongPtr(g_pApp->GetGameLogic()->VGetActorByName("pers"));
-		levelView->VSetControlledActor(pActorTeapot->GetId());*/
+		StrongActorPtr pActorTeapot = MakeStrongPtr(g_pApp->GetGameLogic()->VGetActorByName("human1"));
+		levelView->VSetControlledActor(pActorTeapot->GetId());
 
 		return true;
 	});

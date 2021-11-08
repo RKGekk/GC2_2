@@ -11,7 +11,7 @@
 #include "../nodes/scene_node.h"
 #include "../actors/pers_current_state_enum.h"
 
-class PersTextureAnimStateComponent;
+class TextureAnimStateComponent;
 
 class GeoPhysicsMovementController : public IPointerHandler, public IKeyboardHandler {
 protected:
@@ -37,7 +37,7 @@ protected:
 private:
 	void SetState(PersCurrentStateEnum state);
 	PersCurrentStateEnum GetState();
-	std::shared_ptr<PersTextureAnimStateComponent> GetStateComponent();
+	std::shared_ptr<TextureAnimStateComponent> GetStateComponent();
 	void DefineStateKeyDown(const BYTE c);
 	void DefineStateKeyUp(const BYTE c);
 

@@ -4,7 +4,8 @@
 
 #include "../actors/mesh_render_component.h"
 #include "../actors/mesh_render_light_component.h"
-#include "../actors/pers_texture_anim_state_component.h"
+//#include "../actors/pers_texture_anim_state_component.h"
+#include "../actors/texture_anim_state_component.h"
 #include "../engine/engine.h"
 #include "../engine/d3d_renderer11.h"
 #include "../nodes/light_manager.h"
@@ -227,10 +228,32 @@ D3D11LightPipeline::D3D11LightPipeline(int mesh_id, MeshRenderLightComponent& da
 	COM_ERROR_IF_FAILED(hr, "Failed to create rasterizer state");
 
 	D3D11_BLEND_DESC blendDesc = { 0 };
-	blendDesc.AlphaToCoverageEnable = false;
+	if (data.GetAlphaBlend()) {
+		blendDesc.AlphaToCoverageEnable = false;
+		blendDesc.IndependentBlendEnable = false;
+		blendDesc.RenderTarget[0].BlendEnable = true;
+
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+
+		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	}
+	else {
+		blendDesc.AlphaToCoverageEnable = false;
+		blendDesc.IndependentBlendEnable = false;
+		blendDesc.RenderTarget[0].BlendEnable = false;
+		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	}
+	/*blendDesc.AlphaToCoverageEnable = false;
 	blendDesc.IndependentBlendEnable = false;
 	blendDesc.RenderTarget[0].BlendEnable = false;
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;*/
 	hr = device->CreateBlendState(&blendDesc, m_blendState.GetAddressOf());
 	COM_ERROR_IF_FAILED(hr, "Failed to create blend state.");
 
@@ -337,7 +360,8 @@ HRESULT D3D11LightPipeline::VPreRender(Scene* pScene) {
 	std::shared_ptr<MeshRenderLightComponent> pMeshComponent = MakeStrongPtr(pActor->GetComponent<MeshRenderLightComponent>(MeshRenderLightComponent::g_Name));
 	const MeshHolder& mesh = pMeshComponent->GetMesh(m_mesh_id);
 
-	std::shared_ptr<PersTextureAnimStateComponent> pPersTextureAnimStateComponent = MakeStrongPtr(pActor->GetComponent<PersTextureAnimStateComponent>(PersTextureAnimStateComponent::g_Name));
+	//std::shared_ptr<PersTextureAnimStateComponent> pPersTextureAnimStateComponent = MakeStrongPtr(pActor->GetComponent<PersTextureAnimStateComponent>(PersTextureAnimStateComponent::g_Name));
+	std::shared_ptr<TextureAnimStateComponent> pTextureAnimStateComponent = MakeStrongPtr(pActor->GetComponent<TextureAnimStateComponent>(TextureAnimStateComponent::g_Name));
 
 	ShadowManager* shadowManager = pScene->GetShadowManager();
 	m_shadow_srv2 = shadowManager->ShadowDepthMapSRVAddress();
@@ -352,8 +376,8 @@ HRESULT D3D11LightPipeline::VPreRender(Scene* pScene) {
 	mt.material.Ambient.w = pMeshComponent->GetColor().w;
 	mt.material.Diffuse = material.Diffuse;
 	mt.material.Specular = material.Specular;
-	if (pPersTextureAnimStateComponent) {
-		mt.gTexTransform = pPersTextureAnimStateComponent->GetTexTransform4x4T();
+	if (pTextureAnimStateComponent) {
+		mt.gTexTransform = pTextureAnimStateComponent->GetTexTransform4x4T();
 	}
 	else {
 		DirectX::XMStoreFloat4x4(&mt.gTexTransform, DirectX::XMMatrixIdentity());
